@@ -44,19 +44,15 @@ This is an example of how to run this script from PowerShell:
     $password = "Password"
 
     (New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
-    Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+    Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
     # Version can be 3.0, 4.0 or 5.1
     &$file -Version 5.1 -Username $username -Password $password -Verbose
 
-Once completed, you will need to remove auto logon
-and set the execution policy back to the default (``Restricted `` for Windows clients, or ``RemoteSigned`` for Windows servers). You can
-do this with the following PowerShell commands:
+Once completed, you will need to remove auto logon maybe
+and since "-Scope Process" is used you don't need to reset the execution policy back to the default, for the Execution policy to reset you just need to close the window. You might however need to do the following:
 
 .. code-block:: powershell
-
-    # This isn't needed but is a good security practice to complete
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
 
     $reg_winlogon_path = "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon"
     Set-ItemProperty -Path $reg_winlogon_path -Name AutoAdminLogon -Value 0
